@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  docker:
+    name: Docker image builds and serves
+    needs: check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t qr-order-kit .
+      - name: Smoke test the container
+        run: |
+          docker run -d --name app -p 3000:3000 qr-order-kit
+          for i in $(seq 1 20); do
+            curl -fs http://localhost:3000/api/health && exit 0
+            sleep 1
+          done
+          docker logs app
+          exit 1
