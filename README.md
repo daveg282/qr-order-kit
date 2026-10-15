@@ -4,6 +4,10 @@
 
 Table-side ordering for restaurants. Guests scan a QR code at their table, order from their phone, and the kitchen sees the order on a live board, with no one flagging down a waiter.
 
+| Guest menu | Kitchen board |
+| --- | --- |
+| <img src="docs/mobile.png" alt="Guest menu on a phone" width="260"> | <img src="docs/kitchen.png" alt="Kitchen board with New, Preparing and Ready columns" width="560"> |
+
 This is a clean, open-source rebuild of the ordering flow I've shipped for restaurants in Addis Ababa. The production version runs on a full restaurant ERP that has processed 3,552+ orders. This repo contains no client code.
 
 ## Features
